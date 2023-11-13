@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Profile(windowClass: WindowSizeClass) {
+fun Profile(windowClass: WindowSizeClass,onClick: () -> Unit ) {
     when (windowClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -32,8 +32,8 @@ fun Profile(windowClass: WindowSizeClass) {
                 Titre()
                 SousTitre()
                 Liens()
-                FilledButtonExample {
-                }
+                FilledButtonExample(onClick)
+
             }
         }
         else -> {
@@ -47,9 +47,7 @@ fun Profile(windowClass: WindowSizeClass) {
                     Titre()
                     SousTitre()
                     Liens()
-                    FilledButtonExample() {
-                    }
-
+                    FilledButtonExample( onClick)
                 }
 
             }
@@ -131,10 +129,11 @@ fun Liens(){
 @Composable
 fun FilledButtonExample(onClick: () -> Unit) {
     Spacer(Modifier.height(50.dp))
-    Button(onClick = { onClick() }) {
+    Button(onClick =  onClick) {
         Text("Lancez")
     }
 }
+
 
 
 

@@ -10,6 +10,8 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -41,8 +43,9 @@ class MainActivity : ComponentActivity() {
             ProfilPATheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    Navigation(windowSizeClass)
                 }
-                Navigation(windowSizeClass)
+
             }
         }
     }
@@ -54,7 +57,7 @@ fun Navigation(windowClass: WindowSizeClass){
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val destinations = listOf(Destination.Profile, Destination.Film)
+    val destinations = listOf(Destination.Profile, Destination.Film, Destination.Serie, Destination.Acteur)
 
     Scaffold(
         bottomBar = { BottomNavigation {
@@ -69,8 +72,10 @@ fun Navigation(windowClass: WindowSizeClass){
         }) { innerPadding ->
         NavHost(navController, startDestination = Destination.Profile.destination,
             Modifier.padding(innerPadding)) {
-            composable(Destination.Profile.destination) { Profile(windowClass) }
+            composable(Destination.Profile.destination) { Profile(windowClass){ navController.navigate("film") }}
             composable(Destination.Film.destination) { Film() }
+            composable(Destination.Serie.destination) { Serie() }
+            composable(Destination.Acteur.destination) { Acteur() }
         }
     }
 }
@@ -78,4 +83,6 @@ fun Navigation(windowClass: WindowSizeClass){
 sealed class Destination(val destination: String, val label: String, val icon: ImageVector) {
     object Profile : Destination("profile", "Profil", Icons.Filled.Person)
     object Film : Destination("film", "Film", Icons.Filled.Edit)
+    object Serie : Destination("serie", "Serie", Icons.Filled.Warning)
+    object Acteur : Destination("acteur", "Acteur", Icons.Filled.Share)
 }
