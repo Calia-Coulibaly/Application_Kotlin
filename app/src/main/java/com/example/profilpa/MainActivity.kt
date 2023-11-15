@@ -58,6 +58,7 @@ fun Navigation(windowClass: WindowSizeClass){
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val destinations = listOf(Destination.Profile, Destination.Film, Destination.Serie, Destination.Acteur)
+    val viewModel = MainViewModel()
 
     Scaffold(
         bottomBar = { BottomNavigation {
@@ -73,7 +74,7 @@ fun Navigation(windowClass: WindowSizeClass){
         NavHost(navController, startDestination = Destination.Profile.destination,
             Modifier.padding(innerPadding)) {
             composable(Destination.Profile.destination) { Profile(windowClass){ navController.navigate("film") }}
-            composable(Destination.Film.destination) { Film() }
+            composable(Destination.Film.destination) { Film(viewModel) }
             composable(Destination.Serie.destination) { Serie() }
             composable(Destination.Acteur.destination) { Acteur() }
         }
