@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Film(){
+fun Serie(){
     Text(
-        text = "Liste des films",
+        text = "Liste des series",
         fontSize = 15.sp)
 }
