@@ -105,17 +105,17 @@ public fun Films(viewModel: MainViewModel, navController: NavHostController ) {
 @Composable
 fun Film(id:String, viewModel: MainViewModel) {
     Text(text = id)
-    val movie by viewModel.movies.collectAsStateWithLifecycle()
-    LaunchedEffect(key1 = true) { viewModel.getMovie() }
+    val movie by viewModel.movie.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = true) { viewModel.getMovie(id) }
 
 
-    /*Text(
-        text = movie.,
+    Text(
+        text = movie.original_title,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-    )*/
+    )
 
 }

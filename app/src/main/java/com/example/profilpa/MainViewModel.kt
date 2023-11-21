@@ -36,9 +36,9 @@ class MainViewModel : ViewModel() {
             actors.value = api.lastactor("73fbeeb046f41168a80509da0ee03c8c").results
         }
     }
-    fun getMovie() {
+    fun getMovie(id:String) {
         viewModelScope.launch {
-            movie.value = api.movie("id", "73fbeeb046f41168a80509da0ee03c8c")
+            movie.value = api.movie(id, "73fbeeb046f41168a80509da0ee03c8c")
         }
     }
 }
