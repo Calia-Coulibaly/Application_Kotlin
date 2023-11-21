@@ -9,6 +9,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainViewModel : ViewModel() {
     val movies = MutableStateFlow<List<TmdbMovie>>(listOf())
+    val series = MutableStateFlow<List<TmdbTv>>(listOf())
+    val actors = MutableStateFlow<List<TmdbActor>>(listOf())
+    val movie = MutableStateFlow<TmdbMovieDetail>(TmdbMovieDetail())
+
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create())
@@ -20,6 +24,21 @@ class MainViewModel : ViewModel() {
     fun getMovies() {
         viewModelScope.launch {
             movies.value = api.lastmovies("73fbeeb046f41168a80509da0ee03c8c").results
+        }
+    }
+    fun getSeries() {
+        viewModelScope.launch {
+            series.value = api.lasttv("73fbeeb046f41168a80509da0ee03c8c").results
+        }
+    }
+    fun getActor() {
+        viewModelScope.launch {
+            actors.value = api.lastactor("73fbeeb046f41168a80509da0ee03c8c").results
+        }
+    }
+    fun getMovie() {
+        viewModelScope.launch {
+            movie.value = api.movie("id", "73fbeeb046f41168a80509da0ee03c8c")
         }
     }
 }
