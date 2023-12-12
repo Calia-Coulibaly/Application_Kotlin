@@ -50,7 +50,7 @@ public fun Series(viewModel: MainViewModel, navController: NavHostController) {
             val imageurl = "https://image.tmdb.org/t/p/w780/" + serie.poster_path
             items(1) {
                 Card(
-                    /*onClick = {navController.navigate("serie/${serie.id}")},*/
+                    onClick = {navController.navigate("serie/${serie.id}")},
                     border = BorderStroke(1.dp, Color.LightGray),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
@@ -81,12 +81,8 @@ public fun Series(viewModel: MainViewModel, navController: NavHostController) {
                                 .fillMaxWidth()
                                 .padding(vertical = 8.dp)
                         )
-                        val date = serie.first_air_date
-                        val res = LocalDate.parse(date)
-                        val dateFormatter =
-                            res.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
                         Text(
-                            text = dateFormatter,
+                            text = serie.first_air_date,
                             textAlign = TextAlign.Center,
                             fontStyle = FontStyle.Italic,
                             modifier = Modifier

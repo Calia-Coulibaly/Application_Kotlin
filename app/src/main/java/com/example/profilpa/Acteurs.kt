@@ -50,7 +50,7 @@ public fun Acteurs(viewModel: MainViewModel, navController: NavHostController) {
             val imageurl = "https://image.tmdb.org/t/p/w780/" + actor.profile_path
             items(1) {
                 Card(
-                    /*onClick = {navController.navigate("film/${actor.id}")},*/
+                    onClick = {navController.navigate("person/${actor.id}")},
                     border = BorderStroke(1.dp, Color.LightGray),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White

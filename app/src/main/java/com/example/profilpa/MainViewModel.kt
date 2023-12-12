@@ -2,6 +2,7 @@ package com.example.profilpa
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -12,6 +13,9 @@ class MainViewModel : ViewModel() {
     val series = MutableStateFlow<List<TmdbTv>>(listOf())
     val actors = MutableStateFlow<List<TmdbActor>>(listOf())
     val movie = MutableStateFlow<TmdbMovieDetail>(TmdbMovieDetail())
+    val serie = MutableStateFlow<TmdbTvDetail>(TmdbTvDetail())
+    val acteur = MutableStateFlow<TmdbPersonDetail>(TmdbPersonDetail())
+
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
@@ -19,7 +23,6 @@ class MainViewModel : ViewModel() {
         .build();
 
     val api = retrofit.create(Api::class.java)
-    // à partir de là, on peut appeler api.lastMovies(...)
 
     fun getMovies() {
         viewModelScope.launch {
@@ -39,6 +42,18 @@ class MainViewModel : ViewModel() {
     fun getMovie(id:String) {
         viewModelScope.launch {
             movie.value = api.movie(id, "73fbeeb046f41168a80509da0ee03c8c")
+        }
+    }
+
+    fun getSerie(id: String){
+        viewModelScope.launch {
+            serie.value = api.serie(id, "73fbeeb046f41168a80509da0ee03c8c")
+        }
+    }
+
+    fun getActeur(id: String){
+        viewModelScope.launch {
+            acteur.value = api.actor(id, "73fbeeb046f41168a80509da0ee03c8c")
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.example.profilpa
 
+import ActeurDetail
+import FilmDetail
+import SerieDetail
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -52,7 +55,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Navigation(windowSizeClass)
                 }
-
             }
         }
     }
@@ -68,7 +70,6 @@ fun Navigation(windowClass: WindowSizeClass) {
     val destinations =
         listOf(Destination.Profile, Destination.Films, Destination.Series, Destination.Acteurs)
     val viewModel = MainViewModel()
-
 
     Scaffold(
         bottomBar = {
@@ -100,8 +101,18 @@ fun Navigation(windowClass: WindowSizeClass) {
             composable(
                 "film/{id}"
             ) { backStackEntry ->
-                Film(backStackEntry.arguments?.getString("id")?:"",viewModel)
+                FilmDetail(backStackEntry.arguments?.getString("id")?:"",viewModel)
                 /* Film(backStackEntry.arguments?.getString("id")?:"") Est très utile pour les id | En gros tu cherches une id et si tu trouve pas tu fais :""*/
+            }
+            composable(
+                "serie/{id}"
+            ) { backStackEntry ->
+                SerieDetail(backStackEntry.arguments?.getString("id")?:"",viewModel)
+            }
+            composable(
+                "person/{id}"
+            ) { backStackEntry ->
+                ActeurDetail(backStackEntry.arguments?.getString("id")?:"",viewModel)
             }
         }
     }
@@ -115,5 +126,7 @@ sealed class Destination(val destination: String, val label: String, val icon: I
     object Series : Destination("series", "Series", Icons.Filled.Star)
     object Acteurs : Destination("acteurs", "Acteurs", Icons.Filled.Person)
     object Film : Destination("film", "Film", Icons.Filled.Home)
+    object Serie : Destination("serie", "Serie", Icons.Filled.Home)
+    object Acteur : Destination("acteur", "Acteur", Icons.Filled.Home)
 
 }

@@ -4,15 +4,19 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,11 +65,8 @@ public fun Films(viewModel: MainViewModel, navController: NavHostController ) {
                         .padding(5.dp)
                 ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(2.dp)
+                        modifier = Modifier.fillMaxSize().padding(2.dp)
                     ) {
-                        // AsyncImage va afficher l'image ici
                         AsyncImage(
                             model = imageurl,
                             contentDescription = "Image du film ${movie.original_title}",
@@ -76,12 +77,8 @@ public fun Films(viewModel: MainViewModel, navController: NavHostController ) {
                         )
                         Text(
                             text = movie.original_title,
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp)
-                        )
+                            textAlign = TextAlign.Center, fontWeight = FontWeight.Bold,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp))
                         val date = movie.release_date
                         val res = LocalDate.parse(date)
                         val dateFormatter =
@@ -90,10 +87,7 @@ public fun Films(viewModel: MainViewModel, navController: NavHostController ) {
                             text = dateFormatter,
                             textAlign = TextAlign.Center,
                             fontStyle = FontStyle.Italic,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 8.dp)
-                        )
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp))
                         Spacer(Modifier.height(10.dp))
                     }
                 }
@@ -102,20 +96,3 @@ public fun Films(viewModel: MainViewModel, navController: NavHostController ) {
     }
 }
 
-@Composable
-fun Film(id:String, viewModel: MainViewModel) {
-    Text(text = id)
-    val movie by viewModel.movie.collectAsStateWithLifecycle()
-    LaunchedEffect(key1 = true) { viewModel.getMovie(id) }
-
-
-    Text(
-        text = movie.original_title,
-        textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    )
-
-}
