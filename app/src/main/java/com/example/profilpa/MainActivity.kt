@@ -29,13 +29,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.profilpa.ui.theme.ProfilPATheme
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -48,7 +45,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val windowSizeClass = calculateWindowSizeClass(this)
             ProfilPATheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -66,21 +62,23 @@ class MainActivity : ComponentActivity() {
 fun Navigation(windowClass: WindowSizeClass) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    val currentDestination = navBackStackEntry?.destination?.route
     val destinations =
         listOf(Destination.Profile, Destination.Films, Destination.Series, Destination.Acteurs)
     val viewModel = MainViewModel()
 
     Scaffold(
         bottomBar = {
-            BottomNavigation {
-                destinations.forEach { screen ->
-                    BottomNavigationItem(
-                        icon = { Icon(screen.icon, contentDescription = null) },
-                        label = { Text(screen.label) },
-                        selected =
-                        currentDestination?.hierarchy?.any { it.route == screen.destination } == true,
-                        onClick = { navController.navigate(screen.destination) })
+            if (currentDestination != "profile") {
+                BottomNavigation {
+                    destinations.forEach { screen ->
+                        BottomNavigationItem(
+                            icon = { Icon(screen.icon, contentDescription = null) },
+                            label = { Text(screen.label) },
+                            selected =
+                            currentDestination == screen.destination,
+                            onClick = { navController.navigate(screen.destination) })
+                    }
                 }
             }
         }) { innerPadding ->
@@ -101,18 +99,18 @@ fun Navigation(windowClass: WindowSizeClass) {
             composable(
                 "film/{id}"
             ) { backStackEntry ->
-                FilmDetail(backStackEntry.arguments?.getString("id")?:"",viewModel)
+                FilmDetail(backStackEntry.arguments?.getString("id") ?: "", viewModel)
                 /* Film(backStackEntry.arguments?.getString("id")?:"") Est très utile pour les id | En gros tu cherches une id et si tu trouve pas tu fais :""*/
             }
             composable(
                 "serie/{id}"
             ) { backStackEntry ->
-                SerieDetail(backStackEntry.arguments?.getString("id")?:"",viewModel)
+                SerieDetail(backStackEntry.arguments?.getString("id") ?: "", viewModel)
             }
             composable(
                 "person/{id}"
             ) { backStackEntry ->
-                ActeurDetail(backStackEntry.arguments?.getString("id")?:"",viewModel)
+                ActeurDetail(backStackEntry.arguments?.getString("id") ?: "", viewModel)
             }
         }
     }

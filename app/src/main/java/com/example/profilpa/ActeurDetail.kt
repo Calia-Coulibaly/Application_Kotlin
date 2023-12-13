@@ -1,6 +1,5 @@
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,25 +27,29 @@ import coil.compose.AsyncImage
 import com.example.profilpa.MainViewModel
 
 @Composable
-fun ActeurDetail(id:String, viewModel: MainViewModel) {
+fun ActeurDetail(id: String, viewModel: MainViewModel) {
     val acteur by viewModel.acteur.collectAsStateWithLifecycle()
 
     val pdp = "https://image.tmdb.org/t/p/w780/" + acteur.profile_path
 
     LaunchedEffect(key1 = true) { viewModel.getActeur(id) }
-    LazyVerticalGrid(columns = GridCells.Fixed(1))  {
+    LazyVerticalGrid(columns = GridCells.Fixed(1)) {
         item {
             Column() {
-                Text(text = acteur.name,
+                Text(
+                    text = acteur.name,
                     textAlign = TextAlign.Center, fontWeight = FontWeight.Bold, modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp))
-                AsyncImage(model = pdp,
+                        .padding(vertical = 8.dp)
+                )
+                AsyncImage(
+                    model = pdp,
                     contentDescription = "Image de l'acteur ${acteur.name}",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(220.dp)
-                        .clip(shape = RoundedCornerShape(10.dp)))
+                        .clip(shape = RoundedCornerShape(10.dp))
+                )
                 Spacer(Modifier.height(10.dp))
                 Column(modifier = Modifier.padding(15.dp)) {
                     Text(
@@ -86,7 +90,49 @@ fun ActeurDetail(id:String, viewModel: MainViewModel) {
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
                     )
-
-
-
-                }}}}}
+                }
+            }
+        }
+        items(acteur.credits.cast) { credit ->
+            val affiche = "https://image.tmdb.org/t/p/w780/" + credit.poster_path
+            Card(
+                border = BorderStroke(1.dp, Color.LightGray),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+                modifier = Modifier
+                    .width(width = 100.dp)
+                    .padding(5.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(2.dp)
+                ) {
+                    AsyncImage(
+                        model = affiche,
+                        contentDescription = "Image de l'acteur ${credit.title}",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(10.dp))
+                    )
+                    Text(
+                        text = credit.title,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                    Text(
+                        text = credit.release_date,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                }
+            }
+        }
+    }
+}
